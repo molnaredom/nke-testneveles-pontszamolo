@@ -78,10 +78,10 @@ export function ScoreCalculator() {
       {/* Header - Compact */}
       <div className="flex-shrink-0 py-2 sm:py-3 px-4 sm:px-6 text-center animate-fade-in">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-0.5">
-          <span className="text-gradient-primary">⚽ PONTSZÁMLÓ</span>
+          <span>🎯</span> <span className="text-gradient-primary">PONTSZÁMLÓ</span>
         </h1>
         <p className="text-gray-400 text-xs sm:text-sm font-medium">
-          NKE Testnevelés Óra
+          NKE Tisztjelöltek Testnevelés Óra
         </p>
       </div>
 
@@ -182,7 +182,7 @@ export function ScoreCalculator() {
                         max="59.99"
                         value={seconds}
                         onChange={(e) => setSeconds(e.target.value)}
-                        placeholder="Mp"
+                        placeholder="Másodperc"
                         className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input no-spinner"
                       />
                       <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-xs">
