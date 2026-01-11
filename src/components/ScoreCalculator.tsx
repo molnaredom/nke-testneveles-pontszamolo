@@ -10,19 +10,43 @@ export function ScoreCalculator() {
   const [selectedExercise, setSelectedExercise] =
     useState<string>("speed3200m");
   const [value, setValue] = useState<string>("");
+  const [minutes, setMinutes] = useState<string>("");
+  const [seconds, setSeconds] = useState<string>("");
   const [showTable, setShowTable] = useState<boolean>(false);
 
   const exercises = EXERCISES[gender];
   const exercise: Exercise | undefined = exercises[selectedExercise];
 
-  // Dinamikus pontszám kalkulálás - useMemo helyett setState
+  // Ellenőrizzük, hogy az aktuális gyakorlat perc:mp formátumot igényel-e
+  const isTimeFormat = exercise?.unit === "perc:mp";
+
+  // Dinamikus pontszám kalkulálás
   const points = useMemo(() => {
-    if (!exercise || !value) {
-      return null;
+    let inputValue: number | null = null;
+
+    if (isTimeFormat) {
+      // Perc:mp formátumhoz
+      if (!minutes && !seconds) {
+        return null;
+      }
+      const m = minutes ? parseFloat(minutes) : 0;
+      const s = seconds ? parseFloat(seconds) : 0;
+      if (isNaN(m) || isNaN(s)) {
+        return null;
+      }
+      inputValue = m + s / 100;
+    } else {
+      // Normál formátumhoz
+      if (!value) {
+        return null;
+      }
+      inputValue = parseFloat(value);
+      if (isNaN(inputValue)) {
+        return null;
+      }
     }
 
-    const inputValue = parseFloat(value);
-    if (isNaN(inputValue)) {
+    if (!exercise || inputValue === null) {
       return null;
     }
 
@@ -45,7 +69,7 @@ export function ScoreCalculator() {
     }
 
     return closest.points;
-  }, [value, exercise]);
+  }, [value, minutes, seconds, exercise, isTimeFormat]);
 
   const genderLabel = gender === "female" ? "👩 Nő" : "👨 Férfi";
 
@@ -87,6 +111,8 @@ export function ScoreCalculator() {
                       setGender(g);
                       setSelectedExercise(Object.keys(EXERCISES[g])[0]);
                       setValue("");
+                      setMinutes("");
+                      setSeconds("");
                     }}
                     className={`flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform ${
                       gender === g
@@ -114,6 +140,8 @@ export function ScoreCalculator() {
                   onChange={(e) => {
                     setSelectedExercise(e.target.value);
                     setValue("");
+                    setMinutes("");
+                    setSeconds("");
                   }}
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input"
                 >
@@ -130,21 +158,55 @@ export function ScoreCalculator() {
                 <label className="block text-xs sm:text-sm font-bold text-gray-300 uppercase tracking-wide">
                   Teljesítmény
                 </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    placeholder="Érték..."
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input no-spinner"
-                  />
-                  {exercise && (
-                    <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-xs">
-                      {exercise.unit}
-                    </span>
-                  )}
-                </div>
+                {isTimeFormat ? (
+                  <div className="flex gap-2 sm:gap-3">
+                    <div className="flex-1 relative">
+                      <input
+                        type="number"
+                        step="1"
+                        min="0"
+                        value={minutes}
+                        onChange={(e) => setMinutes(e.target.value)}
+                        placeholder="Perc"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input no-spinner"
+                      />
+                      <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-xs">
+                        p
+                      </span>
+                    </div>
+                    <div className="flex-1 relative">
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="59.99"
+                        value={seconds}
+                        onChange={(e) => setSeconds(e.target.value)}
+                        placeholder="Mp"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input no-spinner"
+                      />
+                      <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-xs">
+                        mp
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      placeholder="Érték..."
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base bg-input no-spinner"
+                    />
+                    {exercise && (
+                      <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-xs">
+                        {exercise.unit}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Result Display */}
@@ -188,7 +250,8 @@ export function ScoreCalculator() {
                           {genderLabel} • {exercise?.name}
                         </p>
                         <p className="text-gray-400 text-xs font-medium">
-                          {value} {exercise?.unit}
+                          {isTimeFormat ? `${minutes}:${seconds}` : value}{" "}
+                          {exercise?.unit}
                         </p>
                       </div>
                     </div>
