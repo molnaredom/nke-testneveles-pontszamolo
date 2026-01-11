@@ -660,6 +660,19 @@ input::placeholder {
   -moz-appearance: textfield;
 }
 
+/* Table row hover effects */
+.table-row-hover {
+  transition: background-color 300ms ease;
+}
+
+.table-row-hover-female:hover {
+  background-color: rgba(236, 72, 153, 0.4);
+}
+
+.table-row-hover-male:hover {
+  background-color: rgba(59, 130, 246, 0.4);
+}
+
 /* Transform scale */
 .scale-105 {
   transform: scale(1.05);

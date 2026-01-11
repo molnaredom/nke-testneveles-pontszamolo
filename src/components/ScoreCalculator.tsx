@@ -119,7 +119,7 @@ export function ScoreCalculator() {
                 >
                   {Object.entries(exercises).map(([key, exercise]) => (
                     <option key={key} value={key}>
-                      {exercise.name} • {exercise.unit}
+                      {exercise.name}
                     </option>
                   ))}
                 </select>
@@ -237,7 +237,7 @@ export function ScoreCalculator() {
       {/* Footer - Fixed at bottom */}
       <div className="flex-shrink-0 py-2 px-4 text-center bg-gradient-to-t from-black/20 to-transparent">
         <p className="text-center text-gray-500 text-xs font-medium">
-          v4.0 • SCI-FI
+          v4.0 • Molnár Ádám által fejlesztve © 2026
         </p>
       </div>
     </div>

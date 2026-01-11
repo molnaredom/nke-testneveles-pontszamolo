@@ -53,14 +53,14 @@ export function TableView({
         {/* Table Container */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-4">
           <div className="overflow-x-auto">
-            <table className="w-full text-xs sm:text-sm">
+            <table className="w-full text-xs sm:text-sm border-collapse">
               <thead>
                 <tr
                   className={`${
                     isFemale ? "bg-pink-900/20" : "bg-cyan-900/20"
-                  } border-b`}
+                  } border-b-2 border-gray-600`}
                 >
-                  <th className="px-2 sm:px-3 py-1.5 text-left font-bold text-gray-300 uppercase text-xs">
+                  <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs border-r border-gray-700/50">
                     Érték ({exercise.unit})
                   </th>
                   <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs">
@@ -72,11 +72,35 @@ export function TableView({
                 {exercise.data.map((item, index) => (
                   <tr
                     key={index}
-                    className={`border-b border-gray-700/30 hover:bg-gray-700/30 transition-colors ${
+                    className={`border-b border-gray-700/50 transition-colors cursor-pointer group ${
                       index % 2 === 0 ? "bg-gray-800/20" : "bg-gray-900/20"
                     }`}
+                    style={{
+                      backgroundColor:
+                        index % 2 === 0
+                          ? "rgba(30, 41, 59, 0.2)"
+                          : "rgba(17, 24, 39, 0.2)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (isFemale) {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(236, 72, 153, 0.3)";
+                      } else {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(59, 130, 246, 0.3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (index % 2 === 0) {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(30, 41, 59, 0.2)";
+                      } else {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(17, 24, 39, 0.2)";
+                      }
+                    }}
                   >
-                    <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold">
+                    <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold border-r border-gray-700/50 text-center">
                       {item.value}
                     </td>
                     <td
