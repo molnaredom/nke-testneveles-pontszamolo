@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { EXERCISES } from "../data/exercises";
-import type { Exercise, ExerciseSet } from "../data/exercises";
+import type { Exercise } from "../data/exercises";
 
 type Gender = "female" | "male";
 
