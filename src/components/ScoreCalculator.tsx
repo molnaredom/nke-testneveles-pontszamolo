@@ -78,7 +78,8 @@ export function ScoreCalculator() {
       {/* Header - Compact */}
       <div className="flex-shrink-0 py-2 sm:py-3 px-4 sm:px-6 text-center animate-fade-in">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-0.5">
-          <span>🎯</span> <span className="text-gradient-primary">PONTSZÁMLÓ</span>
+          <span>🎯</span>{" "}
+          <span className="text-gradient-primary">PONTSZÁMOLÓ</span>
         </h1>
         <p className="text-gray-400 text-xs sm:text-sm font-medium">
           NKE Tisztjelöltek Testnevelés Óra
