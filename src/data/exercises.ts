@@ -16,7 +16,7 @@ export type ExerciseSet = {
 export const femaleExercises: ExerciseSet = {
   speed3200m: {
     id: "speed3200m",
-    name: "3200 m",
+    name: "3200m futás",
     unit: "perc:mp",
     data: [
       { value: 19.1, points: 1 },
@@ -73,7 +73,7 @@ export const femaleExercises: ExerciseSet = {
   },
   speed400m: {
     id: "speed400m",
-    name: "400 m",
+    name: "400m futás",
     unit: "mp",
     data: [
       { value: 90.0, points: 1 },
@@ -244,7 +244,7 @@ export const femaleExercises: ExerciseSet = {
   },
   swimming200m: {
     id: "swimming200m",
-    name: "200 m úszás",
+    name: "200m úszás",
     unit: "perc:mp",
     data: [
       { value: 6.08, points: 1 },
@@ -305,7 +305,7 @@ export const femaleExercises: ExerciseSet = {
 export const maleExercises: ExerciseSet = {
   speed3200m: {
     id: "speed3200m",
-    name: "3200 m",
+    name: "3200m futás",
     unit: "perc:mp",
     data: [
       { value: 15.3, points: 1 },
@@ -362,7 +362,7 @@ export const maleExercises: ExerciseSet = {
   },
   speed400m: {
     id: "speed400m",
-    name: "400 m",
+    name: "400m futás",
     unit: "mp",
     data: [
       { value: 80.0, points: 1 },
@@ -534,7 +534,7 @@ export const maleExercises: ExerciseSet = {
   },
   swimming200m: {
     id: "swimming200m",
-    name: "200 m úszás",
+    name: "200m úszás",
     unit: "perc:mp",
     data: [
       { value: 5.38, points: 1 },
