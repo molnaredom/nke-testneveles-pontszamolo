@@ -293,6 +293,29 @@ export function ScoreCalculator() {
                   />
                 )}
               </div>
+
+              {/* Advertisement Banner */}
+              <div className="mt-8 sm:mt-12 bg-gradient-to-r from-purple-900/30 to-blue-900/30 border border-purple-500/30 p-3 sm:p-4 rounded-2xl text-center">
+                <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                  <span className="text-purple-400 font-semibold">
+                    ✨ Saját weboldalt szeretnél?
+                  </span>
+                  <br />
+                  <span className="text-gray-400">
+                    Fedezd fel az{" "}
+                    <a
+                      href="https://molnarcodes.hu"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-400 hover:text-purple-300 font-semibold underline"
+                    >
+                      molnarcodes.hu
+                    </a>{" "}
+                    weboldalt és készíttetess velem egy professionális
+                    megoldást!
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
