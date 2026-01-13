@@ -126,3 +126,6 @@ export default defineConfig([
   },
 ]);
 ```
+
+NÉV:
+Kifutó évfolyamok

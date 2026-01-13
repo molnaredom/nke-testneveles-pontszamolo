@@ -7,7 +7,7 @@ export type Exercise = {
   name: string;
   unit: string;
   data: Array<{
-    value: number;
+    value: number; // For time exercises (unit: "perc:mp"), value is in seconds
     points: number;
   }>;
 };
@@ -359,7 +359,7 @@ export const maleExercises: ExerciseSet = {
   },
   fugg: {
     id: "fugg",
-    name: "Függés",
+    name: "Függeszkedés",
     unit: "mp",
     data: [
       { value: 100.0, points: 1 },
@@ -416,7 +416,7 @@ export const maleExercises: ExerciseSet = {
   },
   hangPullups: {
     id: "hangPullups",
-    name: "3200m gyak.",
+    name: "3200m gyakorló futás",
     unit: "perc:mp",
     data: [
       { value: 17.0, points: 1 },
@@ -530,7 +530,7 @@ export const maleExercises: ExerciseSet = {
   },
   akp: {
     id: "akp",
-    name: "AKP",
+    name: "Akadály pálya",
     unit: "perc:mp",
     data: [
       { value: 5.38, points: 1 },
@@ -587,7 +587,7 @@ export const maleExercises: ExerciseSet = {
   },
   kgSwimming: {
     id: "kgSwimming",
-    name: "Kézigránát táv",
+    name: "Kézigránát távolság",
     unit: "méter",
     data: [
       { value: 23, points: 1 },
@@ -645,7 +645,7 @@ export const maleExercises: ExerciseSet = {
   divingDistance: {
     id: "divingDistance",
     name: "Búvár",
-    unit: "mp",
+    unit: "méter",
     data: [
       { value: 8.5, points: 1 },
       { value: 9, points: 2 },
@@ -701,7 +701,7 @@ export const maleExercises: ExerciseSet = {
   },
   speed3200mArmed: {
     id: "speed3200mArmed",
-    name: "3200m fegyverrel",
+    name: "3200m futás fegyverrel",
     unit: "perc:mp",
     data: [
       { value: 17.3, points: 1 },
@@ -758,7 +758,7 @@ export const maleExercises: ExerciseSet = {
   },
   speed2000mArmed: {
     id: "speed2000mArmed",
-    name: "2000m fegyverrel",
+    name: "2000m futás fegyverrel",
     unit: "perc:mp",
     data: [
       { value: 10.3, points: 1 },

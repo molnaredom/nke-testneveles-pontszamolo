@@ -3,7 +3,7 @@ export type Exercise = {
   name: string;
   unit: string;
   data: Array<{
-    value: number;
+    value: number; // For time exercises (unit: "perc:mp"), value is in seconds
     points: number;
   }>;
 };
@@ -249,7 +249,7 @@ export const femaleExercises: ExerciseSet = {
   },
   swimming2000m: {
     id: "swimming2000m",
-    name: "2000m gy",
+    name: "2000m gyakorlós futás",
     unit: "perc:mp",
     data: [
       { value: 12.1, points: 1 },
