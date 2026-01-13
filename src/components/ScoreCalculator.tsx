@@ -22,53 +22,84 @@ export function ScoreCalculator() {
 
   // Dinamikus pontszám kalkulálás
   const points = useMemo(() => {
-    let inputValue: number | null = null;
+    if (!exercise) {
+      return null;
+    }
 
     if (isTimeFormat) {
       // Perc:mp formátumhoz
       if (!minutes && !seconds) {
         return null;
       }
-      const m = minutes ? parseFloat(minutes) : 0;
-      const s = seconds ? parseFloat(seconds) : 0;
+      const m = minutes ? parseInt(minutes, 10) : 0;
+      const s = seconds ? parseInt(seconds, 10) : 0;
       if (isNaN(m) || isNaN(s)) {
         return null;
       }
-      inputValue = m + s / 100;
+
+      // Keress meg pontosan
+      const match = exercise.data.find((d) => {
+        if (typeof d.value === "object" && "minutes" in d.value) {
+          return d.value.minutes === m && d.value.seconds === s;
+        }
+        return false;
+      });
+
+      if (match) {
+        return match.points;
+      }
+
+      // Ha nincs pontos egyezés, keress rá a legközelebbire
+      let closest = exercise.data[0];
+      let minDiff = Infinity;
+
+      for (const item of exercise.data) {
+        if (typeof item.value === "object" && "minutes" in item.value) {
+          const totalSeconds = item.value.minutes * 60 + item.value.seconds;
+          const inputTotalSeconds = m * 60 + s;
+          const diff = Math.abs(totalSeconds - inputTotalSeconds);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closest = item;
+          }
+        }
+      }
+
+      return closest.points;
     } else {
       // Normál formátumhoz
       if (!value) {
         return null;
       }
-      inputValue = parseFloat(value);
+      const inputValue = parseFloat(value);
       if (isNaN(inputValue)) {
         return null;
       }
-    }
 
-    if (!exercise || inputValue === null) {
-      return null;
-    }
+      // Keress meg pontosan vagy a legközelebb
+      const match = exercise.data.find((d) => d.value === inputValue);
 
-    // Keress meg pontosan vagy a legközelebb
-    const match = exercise.data.find((d) => d.value === inputValue);
-
-    if (match) {
-      return match.points;
-    }
-
-    let closest = exercise.data[0];
-    let minDiff = Math.abs(closest.value - inputValue);
-
-    for (const item of exercise.data) {
-      const diff = Math.abs(item.value - inputValue);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closest = item;
+      if (match) {
+        return match.points;
       }
-    }
 
-    return closest.points;
+      let closest = exercise.data[0];
+      let minDiff = Math.abs(
+        (typeof closest.value === "number" ? closest.value : 0) - inputValue
+      );
+
+      for (const item of exercise.data) {
+        if (typeof item.value === "number") {
+          const diff = Math.abs(item.value - inputValue);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closest = item;
+          }
+        }
+      }
+
+      return closest.points;
+    }
   }, [value, minutes, seconds, exercise, isTimeFormat]);
 
   const genderLabel = gender === "female" ? "👩 Nő" : "👨 Férfi";
@@ -178,9 +209,9 @@ export function ScoreCalculator() {
                     <div className="flex-1 relative">
                       <input
                         type="number"
-                        step="0.01"
+                        step="1"
                         min="0"
-                        max="59.99"
+                        max="59"
                         value={seconds}
                         onChange={(e) => setSeconds(e.target.value)}
                         placeholder="Másodperc"

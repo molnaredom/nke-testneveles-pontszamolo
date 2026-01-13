@@ -60,12 +60,28 @@ export function TableView({
                     isFemale ? "bg-pink-900/20" : "bg-cyan-900/20"
                   } border-b-2 border-gray-600`}
                 >
-                  <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs border-r border-gray-700/50">
-                    Érték ({exercise.unit})
-                  </th>
-                  <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs">
-                    Pont
-                  </th>
+                  {exercise.unit === "perc:mp" ? (
+                    <>
+                      <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs border-r border-gray-700/50">
+                        Perc
+                      </th>
+                      <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs border-r border-gray-700/50">
+                        Másodperc
+                      </th>
+                      <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs">
+                        Pont
+                      </th>
+                    </>
+                  ) : (
+                    <>
+                      <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs border-r border-gray-700/50">
+                        Érték ({exercise.unit})
+                      </th>
+                      <th className="px-2 sm:px-3 py-1.5 text-center font-bold text-gray-300 uppercase text-xs">
+                        Pont
+                      </th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -100,16 +116,38 @@ export function TableView({
                       }
                     }}
                   >
-                    <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold border-r border-gray-700/50 text-center">
-                      {item.value}
-                    </td>
-                    <td
-                      className={`px-2 sm:px-3 py-1 text-center font-bold ${
-                        isFemale ? "text-pink-400" : "text-cyan-400"
-                      }`}
-                    >
-                      {item.points}
-                    </td>
+                    {exercise.unit === "perc:mp" &&
+                    typeof item.value === "object" &&
+                    "minutes" in item.value ? (
+                      <>
+                        <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold border-r border-gray-700/50 text-center">
+                          {item.value.minutes}
+                        </td>
+                        <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold border-r border-gray-700/50 text-center">
+                          {item.value.seconds.toString().padStart(2, "0")}
+                        </td>
+                        <td
+                          className={`px-2 sm:px-3 py-1 text-center font-bold ${
+                            isFemale ? "text-pink-400" : "text-cyan-400"
+                          }`}
+                        >
+                          {item.points}
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="px-2 sm:px-3 py-1 text-gray-200 font-semibold border-r border-gray-700/50 text-center">
+                          {typeof item.value === "number" ? item.value : "–"}
+                        </td>
+                        <td
+                          className={`px-2 sm:px-3 py-1 text-center font-bold ${
+                            isFemale ? "text-pink-400" : "text-cyan-400"
+                          }`}
+                        >
+                          {item.points}
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
