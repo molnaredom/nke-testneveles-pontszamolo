@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react";
 import { EXERCISES } from "../data/exercises";
-import type { Exercise } from "../data/exercises";
+import type { Exercise, Gender, Cohort } from "../data/exercises";
 import { TableView } from "./TableView";
-
-type Gender = "female" | "male";
 
 export function ScoreCalculator() {
   const [gender, setGender] = useState<Gender>("female");
+  const [cohort, setCohort] = useState<Cohort>("kifuto");
   const [selectedExercise, setSelectedExercise] =
     useState<string>("speed3200m");
   const [value, setValue] = useState<string>("");
@@ -14,7 +13,7 @@ export function ScoreCalculator() {
   const [seconds, setSeconds] = useState<string>("");
   const [showTable, setShowTable] = useState<boolean>(false);
 
-  const exercises = EXERCISES[gender];
+  const exercises = EXERCISES[gender][cohort];
   const exercise: Exercise | undefined = exercises[selectedExercise];
 
   // Ellenőrizzük, hogy az aktuális gyakorlat perc:mp formátumot igényel-e
@@ -122,41 +121,82 @@ export function ScoreCalculator() {
         <div className="max-w-2xl mx-auto">
           {/* Main Card */}
           <div className="bg-card rounded-2xl sm:rounded-4xl shadow-2xl overflow-hidden border">
-            {/* Gender Selector */}
+            {/* Gender & Cohort Selector */}
             <div
               className={`p-4 sm:p-6 text-white transition-all duration-300 ${
                 gender === "female" ? "bg-header-female" : "bg-header-male"
               }`}
             >
-              <p
-                className={`text-xs font-semibold uppercase tracking-widest mb-3 opacity-90 ${
-                  gender === "female" ? "text-pink-400" : "text-cyan-400"
-                }`}
-              >
-                Nem
-              </p>
-              <div className="flex gap-2 sm:gap-4">
-                {(["female", "male"] as Gender[]).map((g) => (
-                  <button
-                    key={g}
-                    onClick={() => {
-                      setGender(g);
-                      setSelectedExercise(Object.keys(EXERCISES[g])[0]);
-                      setValue("");
-                      setMinutes("");
-                      setSeconds("");
-                    }}
-                    className={`flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform ${
-                      gender === g
-                        ? g === "female"
-                          ? "btn-active-female"
-                          : "btn-active-male"
-                        : "btn-inactive"
-                    }`}
-                  >
-                    {g === "female" ? "👩 Nő" : "👨 Férfi"}
-                  </button>
-                ))}
+              {/* Gender Selector */}
+              <div className="mb-4 sm:mb-6">
+                <p
+                  className={`text-xs font-semibold uppercase tracking-widest mb-3 opacity-90 ${
+                    gender === "female" ? "text-pink-400" : "text-cyan-400"
+                  }`}
+                >
+                  Nem
+                </p>
+                <div className="flex gap-2 sm:gap-4">
+                  {(["female", "male"] as Gender[]).map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => {
+                        setGender(g);
+                        setSelectedExercise(
+                          Object.keys(EXERCISES[g][cohort])[0]
+                        );
+                        setValue("");
+                        setMinutes("");
+                        setSeconds("");
+                      }}
+                      className={`flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform ${
+                        gender === g
+                          ? g === "female"
+                            ? "btn-active-female"
+                            : "btn-active-male"
+                          : "btn-inactive"
+                      }`}
+                    >
+                      {g === "female" ? "👩 Nő" : "👨 Férfi"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cohort Selector */}
+              <div>
+                <p
+                  className={`text-xs font-semibold uppercase tracking-widest mb-3 opacity-90 ${
+                    gender === "female" ? "text-pink-400" : "text-cyan-400"
+                  }`}
+                >
+                  Évfolyam
+                </p>
+                <div className="flex gap-2 sm:gap-4">
+                  {(["kifuto", "uj"] as Cohort[]).map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => {
+                        setCohort(c);
+                        setSelectedExercise(
+                          Object.keys(EXERCISES[gender][c])[0]
+                        );
+                        setValue("");
+                        setMinutes("");
+                        setSeconds("");
+                      }}
+                      className={`flex-1 py-2 sm:py-3 px-3 sm:px-6 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 transform ${
+                        cohort === c
+                          ? gender === "female"
+                            ? "btn-active-female"
+                            : "btn-active-male"
+                          : "btn-inactive"
+                      }`}
+                    >
+                      {c === "kifuto" ? "Kifutó" : "Új"}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -279,7 +319,9 @@ export function ScoreCalculator() {
                       </p>
                       <div className="pt-1 space-y-0">
                         <p className="text-gray-300 text-xs sm:text-sm font-semibold">
-                          {genderLabel} • {exercise?.name}
+                          {genderLabel} •{" "}
+                          {cohort === "kifuto" ? "Kifutó" : "Új"} •{" "}
+                          {exercise?.name}
                         </p>
                         <p className="text-gray-400 text-xs font-medium">
                           {isTimeFormat ? `${minutes}:${seconds}` : value}{" "}
