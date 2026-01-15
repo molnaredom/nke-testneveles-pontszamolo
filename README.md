@@ -129,3 +129,5 @@ export default defineConfig([
 
 NÉV:
 Kifutó évfolyamok
+
+mit jelent a nőnél hogy függ a végén?
