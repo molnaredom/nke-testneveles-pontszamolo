@@ -64,6 +64,21 @@ export function ScoreCalculator() {
         }
       }
 
+      // Időformátumban: ha a bevitel rosszabb (nagyobb) az 1 pont küszöbnél, 0 pont
+      const minOnePointEntry = exercise.data.find((d) => d.points === 1);
+      if (
+        minOnePointEntry &&
+        typeof minOnePointEntry.value === "object" &&
+        "minutes" in minOnePointEntry.value
+      ) {
+        const minTotalSeconds =
+          minOnePointEntry.value.minutes * 60 + minOnePointEntry.value.seconds;
+        const inputTotalSeconds = m * 60 + s;
+        if (inputTotalSeconds > minTotalSeconds) {
+          return 0;
+        }
+      }
+
       return closest.points;
     } else {
       // Normál formátumhoz
@@ -94,6 +109,14 @@ export function ScoreCalculator() {
             minDiff = diff;
             closest = item;
           }
+        }
+      }
+
+      // Normál formátumban: ha a bevitel rosszabb (kisebb) az 1 pont küszöbnél, 0 pont
+      const minOnePointEntry = exercise.data.find((d) => d.points === 1);
+      if (minOnePointEntry && typeof minOnePointEntry.value === "number") {
+        if (inputValue < minOnePointEntry.value) {
+          return 0;
         }
       }
 

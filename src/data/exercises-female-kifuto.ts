@@ -19,7 +19,7 @@ export const femaleExercises: ExerciseSet = {
     name: "3200m futás",
     unit: "perc:mp",
     data: [
-      { value: { minutes: 19, seconds: 1 }, points: 1 },
+      { value: { minutes: 19, seconds: 10 }, points: 1 },
       { value: { minutes: 19, seconds: 5 }, points: 2 },
       { value: { minutes: 19, seconds: 0 }, points: 3 },
       { value: { minutes: 18, seconds: 55 }, points: 4 },
