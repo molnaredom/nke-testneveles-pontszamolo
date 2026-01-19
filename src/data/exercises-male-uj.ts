@@ -10,6 +10,7 @@ export type Exercise = {
     value: number | { minutes: number; seconds: number }; // For time exercises (unit: "perc:mp"), value is { minutes, seconds }
     points: number;
   }>;
+  startsFromSecondPoint?: boolean; // If true, 1 point is awarded for completion, and scoring starts from the 2nd entry
 };
 
 // FÉRFI GYAKORLATOK
@@ -326,6 +327,8 @@ export const maleExercises: ExerciseSet = {
     id: "fugg",
     name: "Függeszkedés",
     unit: "mp",
+    startsFromSecondPoint: true,
+
     data: [
       { value: 100.0, points: 1 },
       { value: 13.0, points: 2 },
@@ -492,6 +495,7 @@ export const maleExercises: ExerciseSet = {
       { value: { minutes: 3, seconds: 0 }, points: 49 },
       { value: { minutes: 2, seconds: 56 }, points: 50 },
     ],
+    startsFromSecondPoint: true,
   },
   akp: {
     id: "akp",

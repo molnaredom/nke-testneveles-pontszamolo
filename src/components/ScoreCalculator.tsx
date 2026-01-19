@@ -25,6 +25,11 @@ export function ScoreCalculator() {
       return null;
     }
 
+    const startsFromSecondPoint = exercise.startsFromSecondPoint ?? false;
+    const dataToUse = startsFromSecondPoint
+      ? exercise.data.slice(1)
+      : exercise.data;
+
     if (isTimeFormat) {
       // Perc:mp formátumhoz
       if (!minutes && !seconds) {
@@ -37,7 +42,7 @@ export function ScoreCalculator() {
       }
 
       // Keress meg pontosan
-      const match = exercise.data.find((d) => {
+      const match = dataToUse.find((d) => {
         if (typeof d.value === "object" && "minutes" in d.value) {
           return d.value.minutes === m && d.value.seconds === s;
         }
@@ -49,10 +54,10 @@ export function ScoreCalculator() {
       }
 
       // Ha nincs pontos egyezés, keress rá a legközelebbire
-      let closest = exercise.data[0];
+      let closest = dataToUse[0];
       let minDiff = Infinity;
 
-      for (const item of exercise.data) {
+      for (const item of dataToUse) {
         if (typeof item.value === "object" && "minutes" in item.value) {
           const totalSeconds = item.value.minutes * 60 + item.value.seconds;
           const inputTotalSeconds = m * 60 + s;
@@ -64,18 +69,20 @@ export function ScoreCalculator() {
         }
       }
 
-      // Időformátumban: ha a bevitel rosszabb (nagyobb) az 1 pont küszöbnél, 0 pont
-      const minOnePointEntry = exercise.data.find((d) => d.points === 1);
+      // Időformátumban: ha a bevitel rosszabb (nagyobb) az 1 pont küszöbnél, 0 vagy 1 pont
+      const minPointEntry = dataToUse.find(
+        (d) => d.points === Math.min(...dataToUse.map((x) => x.points))
+      );
       if (
-        minOnePointEntry &&
-        typeof minOnePointEntry.value === "object" &&
-        "minutes" in minOnePointEntry.value
+        minPointEntry &&
+        typeof minPointEntry.value === "object" &&
+        "minutes" in minPointEntry.value
       ) {
         const minTotalSeconds =
-          minOnePointEntry.value.minutes * 60 + minOnePointEntry.value.seconds;
+          minPointEntry.value.minutes * 60 + minPointEntry.value.seconds;
         const inputTotalSeconds = m * 60 + s;
         if (inputTotalSeconds > minTotalSeconds) {
-          return 0;
+          return startsFromSecondPoint ? 1 : 0; // Ha startsFromSecondPoint, akkor 1 pont a teljesítésért
         }
       }
 
@@ -91,18 +98,18 @@ export function ScoreCalculator() {
       }
 
       // Keress meg pontosan vagy a legközelebb
-      const match = exercise.data.find((d) => d.value === inputValue);
+      const match = dataToUse.find((d) => d.value === inputValue);
 
       if (match) {
         return match.points;
       }
 
-      let closest = exercise.data[0];
+      let closest = dataToUse[0];
       let minDiff = Math.abs(
         (typeof closest.value === "number" ? closest.value : 0) - inputValue
       );
 
-      for (const item of exercise.data) {
+      for (const item of dataToUse) {
         if (typeof item.value === "number") {
           const diff = Math.abs(item.value - inputValue);
           if (diff < minDiff) {
@@ -112,11 +119,13 @@ export function ScoreCalculator() {
         }
       }
 
-      // Normál formátumban: ha a bevitel rosszabb (kisebb) az 1 pont küszöbnél, 0 pont
-      const minOnePointEntry = exercise.data.find((d) => d.points === 1);
-      if (minOnePointEntry && typeof minOnePointEntry.value === "number") {
-        if (inputValue < minOnePointEntry.value) {
-          return 0;
+      // Normál formátumban: ha a bevitel rosszabb (kisebb) az 1 pont küszöbnél, 0 vagy 1 pont
+      const minPointEntry = dataToUse.find(
+        (d) => d.points === Math.min(...dataToUse.map((x) => x.points))
+      );
+      if (minPointEntry && typeof minPointEntry.value === "number") {
+        if (inputValue < minPointEntry.value) {
+          return startsFromSecondPoint ? 1 : 0; // Ha startsFromSecondPoint, akkor 1 pont a teljesítésért
         }
       }
 

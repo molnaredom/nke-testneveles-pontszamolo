@@ -6,6 +6,7 @@ export type Exercise = {
     value: number | { minutes: number; seconds: number }; // For time exercises (unit: "perc:mp"), value is { minutes, seconds }
     points: number;
   }>;
+  startsFromSecondPoint?: boolean; // If true, 1 point is awarded for completion, and scoring starts from the 2nd entry
 };
 
 export type ExerciseSet = {
@@ -308,6 +309,7 @@ export const femaleExercises: ExerciseSet = {
     id: "ropeClimb",
     name: "Kötélmászás",
     unit: "mp",
+    startsFromSecondPoint: true,
     data: [
       { value: 100, points: 1 },
       { value: 17.6, points: 2 },
@@ -422,6 +424,7 @@ export const femaleExercises: ExerciseSet = {
     id: "swimming200m",
     name: "200m úszás",
     unit: "perc:mp",
+    startsFromSecondPoint: true,
     data: [
       { value: { minutes: 200, seconds: 0 }, points: 1 },
       { value: { minutes: 6, seconds: 59 }, points: 2 },

@@ -85,6 +85,29 @@ export function TableView({
                 </tr>
               </thead>
               <tbody>
+                {exercise.startsFromSecondPoint && (
+                  <tr
+                    className={`border-b border-gray-700/50 font-bold ${
+                      isFemale
+                        ? "bg-pink-900/40 hover:bg-pink-900/60"
+                        : "bg-cyan-900/40 hover:bg-cyan-900/60"
+                    } transition-colors cursor-default`}
+                  >
+                    <td
+                      colSpan={exercise.unit === "perc:mp" ? 2 : 1}
+                      className="px-2 sm:px-3 py-2 text-gray-100 border-r border-gray-700/50 text-center"
+                    >
+                      Teljesítés (Alapkövetelmény)
+                    </td>
+                    <td
+                      className={`px-2 sm:px-3 py-2 text-center font-bold ${
+                        isFemale ? "text-pink-300" : "text-cyan-300"
+                      }`}
+                    >
+                      1
+                    </td>
+                  </tr>
+                )}
                 {exercise.data.map((item, index) => (
                   <tr
                     key={index}
